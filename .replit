@@ -1,8 +1,17 @@
-run = "npm start"
-language = "nodejs"
-[nix]
-channel = "stable-23_05"
+entrypoint = "python main.py"
+modules = ["python-3.9"]
+
+[deploy]
+startCommand = "python main.py"
+
+[build]
+command = "pip install -r requirements.txt"
+
+[interpreter]
+command = "python3"
 
 [env]
-PORT = "3000"
-NODE_OPTIONS = "--experimental-specifier-resolution=node"
+PYTHONPATH = "."
+
+[run]
+command = "python main.py"
