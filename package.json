@@ -1,0 +1,19 @@
+{
+    "name": "exchange-rates-mcp-server",
+    "version": "1.0.0",
+    "description": "MCP Server for Exchange Rates Data API",
+    "main": "server.py",
+    "scripts": {
+        "start": "python server.py",
+        "test": "python test_server.py"
+    },
+    "keywords": [
+        "mcp",
+        "exchange-rates",
+        "currency",
+        "fastmcp",
+        "api"
+    ],
+    "author": "",
+    "license": "MIT"
+}

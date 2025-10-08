@@ -1,17 +1,10 @@
-entrypoint = "python main.py"
-modules = ["python-3.9"]
+run = "python server.py"
+modules = ["python-3.11"]
 
-[deploy]
-startCommand = "python main.py"
+[nix]
+channel = "stable-24_05"
 
-[build]
-command = "pip install -r requirements.txt"
+[deployment]
+run = ["python", "server.py"]
+deploymentTarget = "cloudrun"
 
-[interpreter]
-command = "python3"
-
-[env]
-PYTHONPATH = "."
-
-[run]
-command = "python main.py"

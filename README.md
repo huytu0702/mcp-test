@@ -1,146 +1,201 @@
-# Exchange Rates Data API MCP Server
+# Exchange Rates MCP Server
 
-This is a Model Context Protocol (MCP) server that provides access to the Exchange Rates Data API from APILayer. It allows AI assistants to access real-time and historical currency exchange rates, perform currency conversions, and retrieve currency information.
+A Model Context Protocol (MCP) server that provides access to real-time and historical exchange rate data for 170+ world currencies using the [Exchange Rates Data API](https://apilayer.com/marketplace/exchangerates_data-api).
 
 ## Features
 
-- **Real-time Exchange Rates**: Get current exchange rates for any currency pair
-- **Historical Data**: Access historical exchange rates for specific dates
-- **Currency Conversion**: Convert amounts between currencies
-- **Time Series Data**: Get exchange rate trends over time periods
-- **Currency Symbols**: List all available currencies and their names
-- **Fluctuation Analysis**: Analyze exchange rate changes between dates
+This MCP server exposes the following tools:
 
-## Available Tools
+### 🔧 Available Tools
 
-### `get_currency_symbols()`
-Returns all available currency symbols and their descriptions.
+1. **get_available_currencies**
+   - Get all available currency symbols and their names
+   - Returns 170+ supported currencies
 
-### `get_latest_rates(base_currency="USD", symbols=None)`
-Gets the latest exchange rates for currencies.
+2. **get_latest_rates**
+   - Get real-time exchange rates
+   - Parameters:
+     - `base`: Base currency (default: USD)
+     - `symbols`: Comma-separated currency codes (optional)
 
-**Parameters:**
-- `base_currency`: The base currency (default: USD)
-- `symbols`: Comma-separated list of currency codes (optional)
+3. **convert_currency**
+   - Convert amounts between currencies
+   - Parameters:
+     - `from_currency`: Source currency code
+     - `to_currency`: Target currency code
+     - `amount`: Amount to convert
+     - `date`: Optional date for historical conversion (YYYY-MM-DD)
 
-### `convert_currency(from_currency, to_currency, amount, date=None)`
-Converts an amount from one currency to another.
+4. **get_historical_rates**
+   - Get exchange rates for a specific date
+   - Parameters:
+     - `date`: Date in YYYY-MM-DD format
+     - `base`: Base currency (default: USD)
+     - `symbols`: Comma-separated currency codes (optional)
 
-**Parameters:**
-- `from_currency`: Source currency code
-- `to_currency`: Target currency code
-- `amount`: Amount to convert
-- `date`: Specific date for historical conversion (YYYY-MM-DD format, optional)
+5. **get_timeseries_data**
+   - Get daily historical rates between two dates
+   - Parameters:
+     - `start_date`: Start date (YYYY-MM-DD)
+     - `end_date`: End date (YYYY-MM-DD)
+     - `base`: Base currency (default: USD)
+     - `symbols`: Comma-separated currency codes (optional)
 
-### `get_historical_rates(date, base_currency="USD", symbols=None)`
-Gets historical exchange rates for a specific date.
+6. **get_fluctuation_data**
+   - Get currency fluctuation statistics
+   - Parameters:
+     - `start_date`: Start date (YYYY-MM-DD)
+     - `end_date`: End date (YYYY-MM-DD)
+     - `base`: Base currency (default: USD)
+     - `symbols`: Comma-separated currency codes (optional)
 
-**Parameters:**
-- `date`: Date in YYYY-MM-DD format
-- `base_currency`: Base currency (default: USD)
-- `symbols`: Comma-separated list of currency codes (optional)
+### 📚 Resources
 
-### `get_time_series_rates(start_date, end_date, base_currency="USD", symbols=None)`
-Gets time series exchange rates between two dates.
+- `exchangerates://info` - Information about the API and available tools
 
-**Parameters:**
-- `start_date`: Start date in YYYY-MM-DD format
-- `end_date`: End date in YYYY-MM-DD format
-- `base_currency`: Base currency (default: USD)
-- `symbols`: Comma-separated list of currency codes (optional)
+## Setup
 
-### `get_fluctuation_data(start_date, end_date, base_currency="USD", symbols=None)`
-Gets fluctuation data between two dates.
+### Local Development
 
-**Parameters:**
-- `start_date`: Start date in YYYY-MM-DD format
-- `end_date`: End date in YYYY-MM-DD format
-- `base_currency`: Base currency (default: USD)
-- `symbols`: Comma-separated list of currency codes (optional)
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd mcp-test
+   ```
 
-## Available Resources
-
-### `currency-symbols`
-Provides all available currency symbols as a resource.
-
-### `latest-rates`
-Provides the latest exchange rates with USD as base currency.
-
-## Installation
-
-1. Clone this repository
-2. Install dependencies:
+2. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-## Running Locally
+3. **Set up environment variables**
+   
+   Create a `.env` file or set the environment variable:
+   ```bash
+   export EXCHANGE_RATES_API_KEY=your_api_key_here
+   ```
 
-To run the MCP server locally:
+4. **Run the server**
+   ```bash
+   python server.py
+   ```
 
-```bash
-python main.py
+### Replit Deployment
+
+1. **Import to Replit**
+   - Go to [Replit](https://replit.com)
+   - Click "Create Repl" > "Import from GitHub"
+   - Paste your repository URL
+
+2. **Set Environment Variables**
+   - In Replit, go to "Secrets" (lock icon in left sidebar)
+   - Add secret:
+     - Key: `EXCHANGE_RATES_API_KEY`
+     - Value: Your API key from apilayer.com
+
+3. **Run the server**
+   - Click the "Run" button
+   - Your MCP server will start and be accessible
+
+4. **Deploy (Optional)**
+   - Click "Deploy" at the top
+   - Choose "Autoscale Deployment" for production use
+   - Follow the prompts to publish your server
+
+## Using with Claude Desktop
+
+To connect this MCP server to Claude Desktop, add it to your Claude configuration:
+
+### Local Connection
+
+Edit your Claude configuration file:
+- macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
+- Windows: `%APPDATA%\Claude\claude_desktop_config.json`
+
+Add the server configuration:
+
+```json
+{
+  "mcpServers": {
+    "exchange-rates": {
+      "command": "python",
+      "args": ["/path/to/mcp-test/server.py"],
+      "env": {
+        "EXCHANGE_RATES_API_KEY": "your_api_key_here"
+      }
+    }
+  }
+}
 ```
 
-The server will start and be available for MCP clients to connect.
+### Replit Connection (SSE)
 
-## Deployment on Replit
+If deployed on Replit, you can connect via SSE:
 
-This project is configured for deployment on Replit:
-
-1. Import this project into Replit
-2. The `.replit` file configures the deployment settings
-3. The `replit.nix` file sets up the Python environment
-4. Once deployed, your MCP server will be available at the provided Replit URL
-
-## OpenAI MCP Integration
-
-To integrate with OpenAI's MCP platform:
-
-1. Deploy this server on Replit
-2. Copy the deployment URL
-3. In OpenAI's platform, add the MCP server using the deployment URL
-4. The AI assistant will then have access to all the exchange rate tools and resources
-
-## API Key
-
-The API key for Exchange Rates Data API is already configured in the code:
-```
-API_KEY = "XcYKZNK5zwVVGGdnGA6Ye5MsdDEVrrgk"
+```json
+{
+  "mcpServers": {
+    "exchange-rates": {
+      "url": "https://your-repl-name.your-username.repl.co",
+      "transport": "sse"
+    }
+  }
+}
 ```
 
 ## Example Usage
 
-Here's an example of how an AI assistant might use these tools:
+Once connected to Claude, you can use natural language to interact with the exchange rates API:
 
-1. **Get available currencies:**
-   ```
-   User: What currencies are available?
-   Assistant: I'll check the currency symbols...
-   ```
+- "What currencies are available?"
+- "What's the current exchange rate from USD to EUR?"
+- "Convert 100 USD to GBP"
+- "What was the EUR/USD exchange rate on 2024-01-15?"
+- "Show me the EUR fluctuation against USD from 2024-01-01 to 2024-01-31"
 
-2. **Convert currency:**
-   ```
-   User: Convert 100 USD to EUR
-   Assistant: I'll convert that for you...
-   ```
+## API Rate Limits
 
-3. **Get exchange rate trends:**
-   ```
-   User: How has the EUR/USD rate changed over the last month?
-   Assistant: I'll get the time series data...
-   ```
+The free plan includes:
+- 100 requests per month
+- Daily rate updates
+- Access to all endpoints
 
-## Error Handling
+For higher usage, consider upgrading to a paid plan at [apilayer.com](https://apilayer.com/marketplace/exchangerates_data-api).
 
-The server includes comprehensive error handling for:
-- API request failures
-- Invalid parameters
-- Network issues
-- Rate limiting
+## Technical Details
 
-All responses include proper error messages and status indicators.
+- **Framework**: FastMCP (Model Context Protocol implementation)
+- **API Client**: httpx (async HTTP client)
+- **Data Source**: apilayer Exchange Rates Data API
+- **Supported Currencies**: 170+ world currencies
+- **Update Frequency**: Real-time (depending on plan)
+
+## File Structure
+
+```
+mcp-test/
+├── server.py           # Main MCP server implementation
+├── requirements.txt    # Python dependencies
+├── README.md          # This file
+├── .replit            # Replit configuration
+└── replit.nix         # Nix environment configuration
+```
+
+## Resources
+
+- [FastMCP Documentation](https://github.com/jlowin/fastmcp)
+- [Model Context Protocol Specification](https://modelcontextprotocol.io)
+- [Exchange Rates API Documentation](https://apilayer.com/marketplace/exchangerates_data-api#documentation-tab)
+- [Replit Deployment Guide](https://docs.replit.com/category/replit-deployments)
 
 ## License
 
-This project is provided as-is for educational and development purposes.
+MIT License - feel free to use this server in your projects.
+
+## Support
+
+For issues with:
+- The MCP server: Open an issue in this repository
+- The Exchange Rates API: Contact [apilayer support](https://apilayer.com)
+- Replit hosting: Check [Replit documentation](https://docs.replit.com)
+
