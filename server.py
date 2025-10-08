@@ -3,12 +3,18 @@ import httpx
 from datetime import datetime
 from typing import Optional
 from fastmcp import FastMCP
+from dotenv import load_dotenv
 
+load_dotenv()
 # Initialize FastMCP server
 mcp = FastMCP("Exchange Rates API")
 
+
+# Load environment variables from .env file
+
+
 # API configuration
-API_KEY = os.getenv("EXCHANGE_RATES_API_KEY", "XcYKZNK5zwVVGGdnGA6Ye5MsdDEVrrgk")
+API_KEY = os.getenv("EXCHANGE_RATES_API_KEY")
 BASE_URL = "https://api.apilayer.com/exchangerates_data"
 
 
