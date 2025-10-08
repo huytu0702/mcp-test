@@ -1,23 +1,9 @@
-{
-  pkgs,
-  nodejs-18_x,
-  ...
-}: {
-  name = "exchange-rates-mcp-server";
-
+{ pkgs }: {
   deps = [
-    nodejs-18_x
-    pkgs.nodePackages.npm
+    pkgs.nodejs-18_x
   ];
 
   env = {
     PORT = "3000";
-  };
-
-  scripts = {
-    start = ''
-      npm install
-      npm start
-    '';
   };
 }
